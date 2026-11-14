@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Planner"
+  short_description: "Mapeie o movimento e as âncoras de uma imagem"
+  default_prompt: "Use $motion-planner. Mapeie as regiões animáveis desta imagem e gere um overlay."

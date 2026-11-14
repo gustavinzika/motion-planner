@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image-motion-planner/manifest.schema.json",
+  "title": "Image motion plan manifest",
+  "description": "Contrato entre a análise de uma imagem e qualquer consumidor (revisor humano, extrator de máscaras, renderer). Descreve O QUE existe, ONDE (com incerteza declarada) e COMO poderia se mover. Não contém assets nem promete que a imagem está pronta para renderizar.",
+  "type": "object",
+  "required": ["manifest_version", "scope", "source", "entities", "motion_regions", "limits"],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "0.1.0" },
+    "scope": {
+      "description": "planning_only = só plano de animação. Qualquer outro valor exige assets verificados e ainda não é suportado por esta versão.",
+      "const": "planning_only"
+    },
+    "source": { "$ref": "#/$defs/source" },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/entity" }
+    },
+    "motion_regions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/motion_region" }
+    },
+    "limits": { "$ref": "#/$defs/limits" }
+  },
+
+  "$defs": {
+    "status": {
+      "description": "proposed = sugerido, ninguém conferiu. needs_review = ambíguo, exige decisão. verified = só com evidência (provenance measured ou human). unknown = não foi possível determinar; value deve ser null.",
+      "enum": ["proposed", "needs_review", "verified", "unknown"]
+    },
+    "provenance": {
+      "description": "measured = calculado por ferramenta sobre os pixels. vlm_estimate = lido/estimado pelo modelo de visão, sem medir. inferred = deduzido (parte oculta, relação de contato). design_choice = decisão de animação, não fato da imagem. human = confirmado por pessoa.",
+      "enum": ["measured", "vlm_estimate", "inferred", "design_choice", "human"]
+    },
+    "tracking": {
+      "type": "object",
+      "required": ["status", "provenance"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "evidence": { "type": "string", "description": "Obrigatório quando status = verified: o que prova (comando, tolerância, quem confirmou)." },
+        "note": { "type": "string" }
+      }
+    },
+    "space": {
+      "description": "image = pixels da imagem original, origem no canto superior esquerdo. bbox_local = pixels relativos ao canto superior esquerdo do bbox da entidade dona do campo.",
+      "enum": ["image", "bbox_local"]
+    },
+    "bbox_field": {
+      "allOf": [{ "$ref": "#/$defs/tracking" }],
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": {
+          "description": "[x_min, y_min, x_max, y_max] em pixels da imagem; x_max e y_max exclusivos. null quando unknown.",
+          "oneOf": [
+            { "type": "null" },
+            { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4 }
+          ]
+        },
+        "status": {}, "provenance": {}, "evidence": {}, "note": {}
+      },
+      "additionalProperties": false
+    },
+    "point_field": {
+      "allOf": [{ "$ref": "#/$defs/tracking" }],
+      "type": "object",
+      "required": ["value", "space"],
+      "properties": {
+        "value": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 }
+          ]
+        },
+        "space": { "$ref": "#/$defs/space" },
+        "status": {}, "provenance": {}, "evidence": {}, "note": {}
+      },
+      "additionalProperties": false
+    },
+    "ref_field": {
+      "allOf": [{ "$ref": "#/$defs/tracking" }],
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": { "type": ["string", "null"] },
+        "status": {}, "provenance": {}, "evidence": {}, "note": {}
+      },
+      "additionalProperties": false
+    },
+    "int_field": {
+      "allOf": [{ "$ref": "#/$defs/tracking" }],
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": { "type": ["integer", "null"] },
+        "status": {}, "provenance": {}, "evidence": {}, "note": {}
+      },
+      "additionalProperties": false
+    },
+
+    "source": {
+      "type": "object",
+      "required": ["file", "width", "height", "coordinate_system"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "coordinate_system": {
+          "type": "object",
+          "required": ["origin", "unit", "x_axis", "y_axis"],
+          "additionalProperties": false,
+          "properties": {
+            "origin": { "const": "top-left" },
+            "unit": { "const": "px" },
+            "x_axis": { "const": "right" },
+            "y_axis": { "const": "down" }
+          }
+        },
+        "pixel_grid": {
+          "description": "Opcional. Use unknown quando a arte não tem grade uniforme (ex.: pixel art com gradientes e brilho).",
+          "type": "object",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "enum": ["unknown", "uniform", "none"] },
+            "cell_px": { "type": "number", "minimum": 1 },
+            "note": { "type": "string" }
+          }
+        },
+        "dimensions_provenance": { "$ref": "#/$defs/provenance" }
+      }
+    },
+
+    "mask": {
+      "description": "null = não existe máscara. Nunca aponte um caminho que não exista. Uma bbox retangular NÃO é máscara.",
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["path", "status", "provenance"],
+          "additionalProperties": false,
+          "properties": {
+            "path": { "type": "string" },
+            "status": { "$ref": "#/$defs/status" },
+            "provenance": { "$ref": "#/$defs/provenance" },
+            "evidence": { "type": "string" },
+            "has_alpha_holes": { "type": "boolean" }
+          }
+        }
+      ]
+    },
+
+    "entity": {
+      "description": "Uma coisa que existe na imagem. Só descreve identidade, posição e relações. Movimento fica em motion_regions.",
+      "type": "object",
+      "required": ["id", "label", "category", "transform_parent", "draw_order", "bbox", "visibility", "mask"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "label": { "type": "string" },
+        "category": {
+          "enum": ["character", "creature", "prop", "structure", "cloth", "rigging", "light_source", "water", "sky", "celestial", "vfx", "terrain", "vegetation", "other"]
+        },
+        "transform_parent": {
+          "allOf": [{ "$ref": "#/$defs/ref_field" }],
+          "description": "Quem carrega esta entidade quando se move (herda translação/rotação). null = raiz. NÃO é ordem de desenho."
+        },
+        "draw_order": {
+          "allOf": [{ "$ref": "#/$defs/int_field" }],
+          "description": "Ordem de empilhamento visual global: menor = mais atrás. Independe de transform_parent."
+        },
+        "bbox": { "$ref": "#/$defs/bbox_field" },
+        "visibility": { "enum": ["full", "partial", "unknown"] },
+        "occluded_by": { "type": "array", "items": { "type": "string" } },
+        "mask": { "$ref": "#/$defs/mask" },
+        "attributes": {
+          "description": "Texto livre opcional (cores, roupa, aparência). Não é usado para movimento. Gênero só se o usuário pedir, como 'aparência de apresentação', nunca como fato.",
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+
+    "amplitude": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number" },
+        "unit": { "enum": ["px", "deg", "fraction_of_bbox", "fraction_of_brightness"] }
+      }
+    },
+
+    "motion": {
+      "type": "object",
+      "required": ["preset", "status", "provenance"],
+      "additionalProperties": false,
+      "properties": {
+        "preset": { "type": "string", "description": "Nome em references/motion_presets.md, ou 'custom' com note." },
+        "amplitude": { "$ref": "#/$defs/amplitude" },
+        "period_s": { "type": "number", "exclusiveMinimum": 0 },
+        "phase": { "type": "number", "minimum": 0, "maximum": 1 },
+        "axis": { "enum": ["x", "y", "xy", "rotate", "none"] },
+        "space": { "enum": ["image", "parent", "local"], "description": "Em que referencial amplitude e eixo são medidos." },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "status": { "$ref": "#/$defs/status" },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "note": { "type": "string" }
+      }
+    },
+
+    "coupling": {
+      "type": "object",
+      "required": ["region_id", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "region_id": { "type": "string" },
+        "kind": { "enum": ["follows", "in_phase", "anti_phase", "independent"] },
+        "note": { "type": "string" }
+      }
+    },
+
+    "motion_region": {
+      "description": "Uma parte de uma entidade que pode se mover. Uma entidade pode ter várias regiões (ex.: um personagem com cabelo e capa).",
+      "type": "object",
+      "required": ["id", "entity_id", "label", "region_bbox", "motion", "requires"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "entity_id": { "type": "string" },
+        "label": { "type": "string" },
+        "region_bbox": { "$ref": "#/$defs/bbox_field" },
+        "pivot": {
+          "allOf": [{ "$ref": "#/$defs/point_field" }],
+          "description": "Centro de rotação/escala da região."
+        },
+        "attachment": {
+          "description": "Onde a região está presa. attach_to = entidade onde o ponto está; o ponto é descrito no space declarado.",
+          "type": "object",
+          "required": ["attach_to", "point"],
+          "additionalProperties": false,
+          "properties": {
+            "attach_to": { "type": "string" },
+            "point": { "$ref": "#/$defs/point_field" }
+          }
+        },
+        "motion": { "$ref": "#/$defs/motion" },
+        "coupling": { "type": "array", "items": { "$ref": "#/$defs/coupling" } },
+        "requires": {
+          "description": "O que falta para animar de verdade. Vazio só se nenhum asset novo for necessário.",
+          "type": "array",
+          "items": { "enum": ["mask", "hidden_content", "emission_mask", "anchor_confirmation", "layer_split", "none"] }
+        }
+      }
+    },
+
+    "limits": {
+      "type": "object",
+      "required": ["render_ready", "human_review_performed", "notes"],
+      "additionalProperties": false,
+      "properties": {
+        "render_ready": { "const": false, "description": "Sempre false em planning_only." },
+        "human_review_performed": { "type": "boolean" },
+        "notes": { "type": "array", "items": { "type": "string" } },
+        "omitted_elements": { "type": "array", "items": { "type": "string" } },
+        "extraction_requirements": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

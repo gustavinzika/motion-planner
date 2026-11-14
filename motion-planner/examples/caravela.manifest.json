@@ -1,0 +1,790 @@
+{
+  "manifest_version": "0.1.0",
+  "scope": "planning_only",
+  "source": {
+    "file": "1794014096128_image.png",
+    "sha256": "9d2181bff08930f3242179226ab5e34587c941c235d5e8f3ad65edb328a20a7a",
+    "width": 1672,
+    "height": 941,
+    "dimensions_provenance": "measured",
+    "coordinate_system": {"origin": "top-left", "unit": "px", "x_axis": "right", "y_axis": "down"},
+    "pixel_grid": {"kind": "unknown", "note": "Pixel art de alta resolução com gradientes e brilho; sem grade uniforme confirmada."}
+  },
+  "entities": [
+    {
+      "id": "sky_backdrop",
+      "label": "Céu noturno com estrelas e nebulosa roxa",
+      "category": "sky",
+      "transform_parent": {"value": null, "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 0, "status": "proposed", "provenance": "inferred"},
+      "bbox": {"value": [0, 0, 1672, 300], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "clouds_left",
+      "label": "Nuvens roxas, canto superior esquerdo",
+      "category": "sky",
+      "transform_parent": {"value": "sky_backdrop", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 1, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [0, 0, 335, 205], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "clouds_right",
+      "label": "Nuvens roxas, lado direito do horizonte",
+      "category": "sky",
+      "transform_parent": {"value": "sky_backdrop", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 1, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [1000, 160, 1672, 300], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "moon",
+      "label": "Lua cheia",
+      "category": "celestial",
+      "transform_parent": {"value": "sky_backdrop", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 2, "status": "proposed", "provenance": "inferred"},
+      "bbox": {"value": [1243, 8, 1522, 275], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "ocean",
+      "label": "Oceano azul-escuro com cristas ciano bioluminescentes",
+      "category": "water",
+      "transform_parent": {"value": null, "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 3, "status": "proposed", "provenance": "inferred"},
+      "bbox": {"value": [0, 298, 1672, 941], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["ship_hull"],
+      "mask": null,
+      "attributes": {"colors": "azul-marinho profundo; cristas e espuma em ciano brilhante"}
+    },
+    {
+      "id": "moon_reflection",
+      "label": "Reflexo da lua na água (coluna de brilho)",
+      "category": "vfx",
+      "transform_parent": {"value": "ocean", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 4, "status": "proposed", "provenance": "inferred"},
+      "bbox": {"value": [1220, 296, 1570, 450], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "ship_hull",
+      "label": "Casco da caravela com popa, corrimãos, poste da bandeira e gurupés",
+      "category": "structure",
+      "transform_parent": {"value": null, "status": "proposed", "provenance": "inferred"},
+      "draw_order": {
+        "value": 5,
+        "status": "needs_review",
+        "provenance": "inferred",
+        "note": "Inclui corrimões que ficam NA FRENTE do timoneiro e da ruiva. Para animar com oclusão correta, dividir em casco de trás e corrimão da frente (layer_split)."
+      },
+      "bbox": {"value": [138, 100, 1655, 830], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "mast",
+      "label": "Mastro principal",
+      "category": "structure",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 6, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [755, 0, 810, 480], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["rigging"],
+      "mask": null
+    },
+    {
+      "id": "sail_main",
+      "label": "Vela grande à esquerda do mastro",
+      "category": "cloth",
+      "transform_parent": {"value": "mast", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 7, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [370, 0, 985, 460], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["rigging"],
+      "mask": null,
+      "attributes": {"colors": "creme com sombras lilás e reflexos de luz quente"}
+    },
+    {
+      "id": "sail_fore",
+      "label": "Vela menor à direita do mastro",
+      "category": "cloth",
+      "transform_parent": {"value": "mast", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 7, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [850, 85, 1210, 545], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["rigging"],
+      "mask": null
+    },
+    {
+      "id": "rigging",
+      "label": "Cordame e escada de corda (bordas vazadas)",
+      "category": "rigging",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 10, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {
+        "value": [470, 40, 800, 745],
+        "status": "needs_review",
+        "provenance": "vlm_estimate",
+        "note": "Estrutura fina e vazada; um bbox retangular cobre muito fundo. Precisa de máscara com alpha e buracos."
+      },
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "flag",
+      "label": "Bandeira vermelha e branca com brasão",
+      "category": "cloth",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 6, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [55, 125, 215, 285], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "stern_windows",
+      "label": "Janelas da popa com luz quente",
+      "category": "light_source",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 6, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [165, 505, 335, 600], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "wheel",
+      "label": "Leme (timão)",
+      "category": "prop",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 9, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [335, 300, 445, 460], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "barrels_left",
+      "label": "Barris no convés, lado esquerdo",
+      "category": "prop",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 9, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [470, 580, 618, 655], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["rigging"],
+      "mask": null
+    },
+    {
+      "id": "barrels_right",
+      "label": "Barris no convés, lado direito",
+      "category": "prop",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 9, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [1040, 568, 1140, 650], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "armillary_sphere",
+      "label": "Esfera armilar dourada",
+      "category": "prop",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 9, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [845, 470, 925, 560], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "lantern_stern",
+      "label": "Lanterna do poste da popa",
+      "category": "light_source",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 12, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [110, 300, 160, 395], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "lantern_rail",
+      "label": "Lanterna do corrimão traseiro",
+      "category": "light_source",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 12, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [525, 372, 575, 460], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "lantern_deck_a",
+      "label": "Lanterna do convés (esquerda)",
+      "category": "light_source",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 12, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [428, 505, 472, 590], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "lantern_deck_b",
+      "label": "Lanterna do convés (centro-direita)",
+      "category": "light_source",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 12, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [920, 520, 968, 580], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "lantern_deck_c",
+      "label": "Lanterna do convés (frente)",
+      "category": "light_source",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 12, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [955, 578, 1010, 690], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "helmsman",
+      "label": "Timoneiro de cabelo escuro, casaco azul e capa vermelha",
+      "category": "character",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 10, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [195, 235, 445, 440], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["ship_hull"],
+      "mask": null,
+      "attributes": {"appearance": "cabelo escuro, casaco azul-marinho com detalhes dourados, capa vermelha, mãos no leme"}
+    },
+    {
+      "id": "girl",
+      "label": "Mulher ruiva com mapa",
+      "category": "character",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 11, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [678, 415, 838, 672], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["ship_hull"],
+      "mask": null,
+      "attributes": {"appearance": "cabelo ruivo longo, colete vinho, camisa branca, saia clara, segura um mapa"}
+    },
+    {
+      "id": "map",
+      "label": "Mapa segurado pela ruiva",
+      "category": "prop",
+      "transform_parent": {"value": "girl", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 12, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [750, 470, 840, 545], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    },
+    {
+      "id": "silver_figure",
+      "label": "Figura de cabelo prateado na proa",
+      "category": "character",
+      "transform_parent": {"value": "ship_hull", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 11, "status": "needs_review", "provenance": "inferred"},
+      "bbox": {"value": [1085, 318, 1332, 592], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "partial",
+      "occluded_by": ["ship_hull"],
+      "mask": null,
+      "attributes": {"appearance": "cabelo prateado, camisa clara, calça escura, botas, lenço azul esvoaçante; pé apoiado na proa"}
+    },
+    {
+      "id": "bow_wake_foam",
+      "label": "Espuma e onda de proa",
+      "category": "vfx",
+      "transform_parent": {"value": "ocean", "status": "proposed", "provenance": "inferred"},
+      "draw_order": {"value": 13, "status": "proposed", "provenance": "inferred"},
+      "bbox": {"value": [1040, 700, 1400, 830], "status": "proposed", "provenance": "vlm_estimate"},
+      "visibility": "full",
+      "mask": null
+    }
+  ],
+  "motion_regions": [
+    {
+      "id": "sky_twinkle",
+      "entity_id": "sky_backdrop",
+      "label": "Cintilar das estrelas",
+      "region_bbox": {"value": [0, 0, 1672, 300], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "twinkle",
+        "amplitude": {"value": 0.3, "unit": "fraction_of_brightness"},
+        "period_s": 2.0,
+        "axis": "none",
+        "space": "local",
+        "constraints": [
+          "Só as estrelas mudam de brilho; nebulosa e nuvens não.",
+          "Fases diferentes por estrela para não piscar em bloco."
+        ],
+        "status": "proposed",
+        "provenance": "design_choice",
+        "note": "Estrelas são pontos de poucos pixels: precisam de máscara por limiar de luminosidade ou detecção, não de bbox."
+      },
+      "requires": ["mask"]
+    },
+    {
+      "id": "clouds_left_drift",
+      "entity_id": "clouds_left",
+      "label": "Deriva lenta das nuvens da esquerda",
+      "region_bbox": {"value": [0, 0, 335, 205], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "drift",
+        "amplitude": {"value": 14, "unit": "px"},
+        "period_s": 40,
+        "axis": "x",
+        "space": "image",
+        "constraints": ["Nuvens se misturam à nebulosa; revelar o fundo exige reconstrução.", "Loop sem corte visível."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "hidden_content"]
+    },
+    {
+      "id": "clouds_right_drift",
+      "entity_id": "clouds_right",
+      "label": "Deriva lenta das nuvens da direita",
+      "region_bbox": {"value": [1000, 160, 1672, 300], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "drift",
+        "amplitude": {"value": 14, "unit": "px"},
+        "period_s": 46,
+        "phase": 0.3,
+        "axis": "x",
+        "space": "image",
+        "constraints": ["Mesmo sentido da outra deriva para dar sensação de vento único."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "hidden_content"]
+    },
+    {
+      "id": "moon_glow",
+      "entity_id": "moon",
+      "label": "Pulso leve do brilho da lua",
+      "region_bbox": {"value": [1243, 8, 1522, 275], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "glow_pulse",
+        "amplitude": {"value": 0.06, "unit": "fraction_of_brightness"},
+        "period_s": 6.0,
+        "axis": "none",
+        "space": "local",
+        "constraints": ["A lua não se desloca."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "ocean_swell",
+      "entity_id": "ocean",
+      "label": "Ondulação da superfície do mar",
+      "region_bbox": {"value": [0, 298, 1672, 941], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "displace_in_mask",
+        "amplitude": {"value": 3, "unit": "px"},
+        "period_s": 4.0,
+        "axis": "y",
+        "space": "image",
+        "constraints": [
+          "Deslocamento restrito à máscara da água (sem arrastar casco, personagens ou lua).",
+          "Linha de contato casco/água precisa acompanhar o balanço do navio."
+        ],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "coupling": [{"region_id": "ship_bob", "kind": "in_phase", "note": "Mesmo ritmo-base, sem copiar o movimento."}],
+      "requires": ["mask"]
+    },
+    {
+      "id": "moon_reflection_glitter",
+      "entity_id": "moon_reflection",
+      "label": "Cintilar do reflexo da lua",
+      "region_bbox": {"value": [1220, 296, 1570, 450], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "glitter",
+        "amplitude": {"value": 0.25, "unit": "fraction_of_brightness"},
+        "period_s": 1.6,
+        "axis": "y",
+        "space": "local",
+        "constraints": ["Só brilho; a posição do reflexo é fixa abaixo da lua."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "bow_wake_surge",
+      "entity_id": "bow_wake_foam",
+      "label": "Espuma da proa subindo e descendo",
+      "region_bbox": {"value": [1040, 700, 1400, 830], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "foam_surge",
+        "amplitude": {"value": 6, "unit": "px"},
+        "period_s": 3.0,
+        "axis": "y",
+        "space": "parent",
+        "constraints": ["Precisa seguir a proa, que sobe e desce com o casco."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "coupling": [{"region_id": "ship_bob", "kind": "follows"}],
+      "requires": ["mask"]
+    },
+    {
+      "id": "ship_bob",
+      "entity_id": "ship_hull",
+      "label": "Sobe e desce do navio",
+      "region_bbox": {"value": [138, 100, 1655, 830], "status": "proposed", "provenance": "vlm_estimate"},
+      "pivot": {"value": [790, 760], "space": "image", "status": "needs_review", "provenance": "inferred"},
+      "motion": {
+        "preset": "bob",
+        "amplitude": {"value": 4, "unit": "px"},
+        "period_s": 5.0,
+        "axis": "y",
+        "space": "image",
+        "constraints": [
+          "Todo o navio se move junto: personagens, velas e lanternas herdam via transform_parent.",
+          "Nenhum filho pode ter bob próprio (evita movimento duplicado)."
+        ],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "layer_split"]
+    },
+    {
+      "id": "ship_roll",
+      "entity_id": "ship_hull",
+      "label": "Balanço lateral leve do navio",
+      "region_bbox": {"value": [138, 100, 1655, 830], "status": "proposed", "provenance": "vlm_estimate"},
+      "pivot": {"value": [790, 760], "space": "image", "status": "needs_review", "provenance": "inferred"},
+      "motion": {
+        "preset": "roll",
+        "amplitude": {"value": 0.6, "unit": "deg"},
+        "period_s": 7.0,
+        "phase": 0.25,
+        "axis": "rotate",
+        "space": "image",
+        "constraints": ["Rotação pequena: acima disso o casco descola da linha d'água."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "coupling": [{"region_id": "ship_bob", "kind": "independent", "note": "Período diferente para não parecer loop curto."}],
+      "requires": ["mask", "layer_split"]
+    },
+    {
+      "id": "flag_wave",
+      "entity_id": "flag",
+      "label": "Bandeira ondulando",
+      "region_bbox": {"value": [55, 125, 215, 285], "status": "proposed", "provenance": "vlm_estimate"},
+      "pivot": {"value": [203, 165], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "ship_hull",
+        "point": {"value": [203, 165], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "wave_distortion",
+        "amplitude": {"value": 6, "unit": "px"},
+        "period_s": 2.4,
+        "axis": "y",
+        "space": "local",
+        "constraints": ["A borda presa ao mastro da bandeira não se move.", "Amplitude cresce da fixação para a ponta."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "anchor_confirmation"]
+    },
+    {
+      "id": "sail_main_billow",
+      "entity_id": "sail_main",
+      "label": "Vela grande inflando",
+      "region_bbox": {"value": [370, 0, 985, 460], "status": "proposed", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "mast",
+        "point": {"value": [780, 60], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "billow",
+        "amplitude": {"value": 5, "unit": "px"},
+        "period_s": 5.0,
+        "axis": "x",
+        "space": "local",
+        "constraints": [
+          "Bordas presas à verga e ao mastro não se movem.",
+          "Cordas que cruzam a vela precisam acompanhar.",
+          "Sentido do vento deve concordar com bandeira e lenço."
+        ],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "coupling": [{"region_id": "sail_fore_billow", "kind": "in_phase", "note": "Defasagem pequena entre as duas velas."}],
+      "requires": ["mask", "layer_split"]
+    },
+    {
+      "id": "sail_fore_billow",
+      "entity_id": "sail_fore",
+      "label": "Vela menor inflando",
+      "region_bbox": {"value": [850, 85, 1210, 545], "status": "proposed", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "mast",
+        "point": {"value": [808, 95], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "billow",
+        "amplitude": {"value": 4, "unit": "px"},
+        "period_s": 5.0,
+        "phase": 0.15,
+        "axis": "x",
+        "space": "local",
+        "constraints": ["Mesmas restrições da vela grande."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "layer_split"]
+    },
+    {
+      "id": "rigging_sway",
+      "entity_id": "rigging",
+      "label": "Leve balanço do cordame",
+      "region_bbox": {"value": [470, 40, 800, 745], "status": "proposed", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "mast",
+        "point": {"value": [775, 40], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "rope_sway",
+        "amplitude": {"value": 1.5, "unit": "px"},
+        "period_s": 3.5,
+        "axis": "x",
+        "space": "local",
+        "constraints": ["Pontas fixas (mastro e casco) não se movem.", "Estrutura vazada: máscara com alpha, senão arrasta o fundo."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "hidden_content"]
+    },
+    {
+      "id": "lantern_stern_flicker",
+      "entity_id": "lantern_stern",
+      "label": "Chama da lanterna da popa",
+      "region_bbox": {"value": [110, 300, 160, 395], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "flicker",
+        "amplitude": {"value": 0.12, "unit": "fraction_of_brightness"},
+        "period_s": 0.9,
+        "phase": 0.0,
+        "axis": "none",
+        "space": "local",
+        "constraints": ["Só brilho; a lanterna não se desloca.", "Fase própria para não piscarem juntas."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "lantern_rail_flicker",
+      "entity_id": "lantern_rail",
+      "label": "Chama da lanterna do corrimão",
+      "region_bbox": {"value": [525, 372, 575, 460], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "flicker",
+        "amplitude": {"value": 0.12, "unit": "fraction_of_brightness"},
+        "period_s": 0.9,
+        "phase": 0.2,
+        "axis": "none",
+        "space": "local",
+        "constraints": ["Só brilho; a lanterna não se desloca.", "Fase própria para não piscarem juntas."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "lantern_deck_a_flicker",
+      "entity_id": "lantern_deck_a",
+      "label": "Chama da lanterna do convés (esquerda)",
+      "region_bbox": {"value": [428, 505, 472, 590], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "flicker",
+        "amplitude": {"value": 0.12, "unit": "fraction_of_brightness"},
+        "period_s": 0.9,
+        "phase": 0.4,
+        "axis": "none",
+        "space": "local",
+        "constraints": ["Só brilho; a lanterna não se desloca.", "Fase própria para não piscarem juntas."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "lantern_deck_b_flicker",
+      "entity_id": "lantern_deck_b",
+      "label": "Chama da lanterna do convés (centro-direita)",
+      "region_bbox": {"value": [920, 520, 968, 580], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "flicker",
+        "amplitude": {"value": 0.12, "unit": "fraction_of_brightness"},
+        "period_s": 0.9,
+        "phase": 0.6,
+        "axis": "none",
+        "space": "local",
+        "constraints": ["Só brilho; a lanterna não se desloca.", "Fase própria para não piscarem juntas."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "lantern_deck_c_flicker",
+      "entity_id": "lantern_deck_c",
+      "label": "Chama da lanterna do convés (frente)",
+      "region_bbox": {"value": [955, 578, 1010, 690], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "flicker",
+        "amplitude": {"value": 0.12, "unit": "fraction_of_brightness"},
+        "period_s": 0.9,
+        "phase": 0.8,
+        "axis": "none",
+        "space": "local",
+        "constraints": ["Só brilho; a lanterna não se desloca.", "Fase própria para não piscarem juntas."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "stern_windows_flicker",
+      "entity_id": "stern_windows",
+      "label": "Luz quente das janelas da popa",
+      "region_bbox": {"value": [165, 505, 335, 600], "status": "proposed", "provenance": "vlm_estimate"},
+      "motion": {
+        "preset": "flicker",
+        "amplitude": {"value": 0.08, "unit": "fraction_of_brightness"},
+        "period_s": 1.3,
+        "phase": 0.5,
+        "axis": "none",
+        "space": "local",
+        "constraints": ["Só brilho das janelas."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["emission_mask"]
+    },
+    {
+      "id": "helmsman_cape_sway",
+      "entity_id": "helmsman",
+      "label": "Capa do timoneiro",
+      "region_bbox": {"value": [198, 318, 320, 432], "status": "proposed", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "helmsman",
+        "point": {"value": [305, 322], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "cloth_sway",
+        "amplitude": {"value": 5, "unit": "px"},
+        "period_s": 2.8,
+        "axis": "x",
+        "space": "local",
+        "constraints": ["A capa se prende aos ombros; o corpo atrás dela precisa existir quando ela se move."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "hidden_content"]
+    },
+    {
+      "id": "girl_hair_sway",
+      "entity_id": "girl",
+      "label": "Cabelo da ruiva",
+      "region_bbox": {"value": [680, 415, 770, 500], "status": "proposed", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "girl",
+        "point": {"value": [745, 430], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "hair_sway",
+        "amplitude": {"value": 4, "unit": "px"},
+        "period_s": 3.2,
+        "axis": "x",
+        "space": "local",
+        "constraints": ["Raiz presa à cabeça; mechas finas sobre o fundo exigem alpha."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "hidden_content"]
+    },
+    {
+      "id": "silver_hair_sway",
+      "entity_id": "silver_figure",
+      "label": "Cabelo da figura prateada",
+      "region_bbox": {"value": [1205, 322, 1265, 385], "status": "proposed", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "silver_figure",
+        "point": {"value": [1235, 345], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "hair_sway",
+        "amplitude": {"value": 3, "unit": "px"},
+        "period_s": 2.6,
+        "phase": 0.4,
+        "axis": "x",
+        "space": "local",
+        "constraints": ["Cabelo claro sobre o céu escuro: borda sujeita a halo na máscara."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "hidden_content"]
+    },
+    {
+      "id": "silver_scarf_flutter",
+      "entity_id": "silver_figure",
+      "label": "Lenço azul esvoaçante",
+      "region_bbox": {"value": [1088, 392, 1232, 450], "status": "proposed", "provenance": "vlm_estimate"},
+      "attachment": {
+        "attach_to": "silver_figure",
+        "point": {"value": [1225, 398], "space": "image", "status": "needs_review", "provenance": "vlm_estimate"}
+      },
+      "motion": {
+        "preset": "cloth_sway",
+        "amplitude": {"value": 8, "unit": "px"},
+        "period_s": 1.8,
+        "axis": "x",
+        "space": "local",
+        "constraints": ["Preso ao ombro; sentido igual ao da bandeira e da capa."],
+        "status": "proposed",
+        "provenance": "design_choice"
+      },
+      "requires": ["mask", "hidden_content"]
+    }
+  ],
+  "limits": {
+    "render_ready": false,
+    "human_review_performed": false,
+    "notes": [
+      "Todas as bbox, pivôs e âncoras são estimativas do modelo de visão (vlm_estimate) conferidas só visualmente no overlay; nenhuma foi medida nem confirmada por pessoa.",
+      "Nenhuma máscara existe (mask: null em todas as entidades). Bbox retangular não é máscara.",
+      "Direção do vento inferida: bandeira, capa e lenço apontam para a esquerda da imagem. Sentido das velas a decidir.",
+      "O casco contém os corrimões que ficam à frente dos personagens; por isso draw_order do casco está em needs_review e o validador avisa sobre oclusão.",
+      "Entidades sem região de movimento (leme, barris, esfera armilar, mapa) são estáticas e seguem o navio via transform_parent.",
+      "Atributos de aparência dos personagens são descritivos e não afetam o movimento."
+    ],
+    "omitted_elements": [
+      "pergaminhos no convés",
+      "tapete vermelho/mesa",
+      "tábuas do convés",
+      "estrelas individuais",
+      "poste da bandeira (incluído no casco)"
+    ],
+    "extraction_requirements": [
+      "Máscara da água separada do casco (e linha d'água).",
+      "Máscara de alpha com buracos para cordame, cabelos e lenço.",
+      "Divisão do casco em fundo e corrimão da frente.",
+      "Máscaras de emissão para lanternas, janelas, lua e reflexo.",
+      "Reconstrução do que fica atrás de capa, cabelos e lenço (hidden_content), marcada como inferência."
+    ]
+  }
+}
